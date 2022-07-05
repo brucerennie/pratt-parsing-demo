@@ -93,6 +93,16 @@ end
 
 #   token.type = 'get'
 #   return CompositeNode(token, [left, index])
+procedure LeftIndex(parser, token, left_token, unused_binding_power)
+  local index
+  if not(left_token.token.TypeV == ("name | "get")) then {
+    tdop.ParseError(left_token.token.Value || " can't be indexed.")
+  }
+  index := parser.ParseUntil(0)
+  parser.Eat("]")
+  token.TypeV := "get"
+  return CompositeNode(token, [left_token, index])
+end
 
 
 # def LeftTernary(p, token, left, bp):
